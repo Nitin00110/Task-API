@@ -3,6 +3,7 @@ package com.example.demo.Controller;
 import com.example.demo.DTO.TasksRecordDTO;
 import com.example.demo.DTO.TasksSummaryDTO;
 import com.example.demo.Service.TasksService;
+import jakarta.validation.Valid;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public class TasksController {
     }
 
     @PostMapping
-    public ResponseEntity<TasksSummaryDTO> creatingTask(@RequestBody TasksRecordDTO tasksRecordDTO){
+    public ResponseEntity<TasksSummaryDTO> creatingTask(@Valid @RequestBody TasksRecordDTO tasksRecordDTO){
         log.info("Tasks is created with title of {}",tasksRecordDTO.title());
         TasksSummaryDTO tasksSummaryDTO = tasksService.createTask(tasksRecordDTO);
         log.info("Task created with Id of {}",tasksSummaryDTO.id());
