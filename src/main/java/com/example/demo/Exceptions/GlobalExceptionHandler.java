@@ -52,13 +52,18 @@ public class GlobalExceptionHandler {
     }
 
     // 3. Catch-all for Generic Internal Server Errors
+    // 3. Catch-all for Generic Internal Server Errors
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
+
+        // Print the error to your console/logs so you can see the full stack trace
+        ex.printStackTrace();
+
         ErrorResponse response = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .error("Internal Server Error")
-                .message("An unexpected error occurred")
+                .error(ex.getClass().getSimpleName())
+                .message(ex.getMessage()) // THIS is the magic line that will show you the exact Postgres error!
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
