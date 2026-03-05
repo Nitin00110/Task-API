@@ -3,6 +3,7 @@ package com.example.demo.Service;
 import com.example.demo.DTO.TasksRecordDTO;
 import com.example.demo.DTO.TasksSummaryDTO;
 import com.example.demo.Entities.Tasks;
+import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.Repository.TasksRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,9 @@ public class TasksService {
     }
 
     public TasksSummaryDTO createTask(TasksRecordDTO tasksRecordDTO){
+        log.info("Task Creation Started");
+        log.debug("Task details payload: title={}, urgency={}, importance={}",
+                tasksRecordDTO.title(), tasksRecordDTO.urgent(), tasksRecordDTO.importance());
         Tasks tasks = new Tasks(
                 tasksRecordDTO.title(),
                 tasksRecordDTO.description(),
@@ -38,7 +42,8 @@ public class TasksService {
     }
 
     public TasksSummaryDTO findTaskById(Long id){
-        Tasks tasks = tasksRepo.findById(id).orElseThrow(()-> new IllegalArgumentException("Task Id not Found"));
+        // Replace IllegalArgumentException with ResourceNotFoundException
+        Tasks tasks = tasksRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("Task Id not Found"));
         return TasksSummaryDTO.fromEntity(tasks);
     }
 
